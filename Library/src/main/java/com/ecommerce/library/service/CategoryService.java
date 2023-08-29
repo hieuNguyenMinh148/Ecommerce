@@ -18,4 +18,6 @@ public interface CategoryService {
 
     void enableById(Long id);
 
+    List<Category> findAllByActivated();
+
 }
