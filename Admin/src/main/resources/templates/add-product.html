@@ -33,7 +33,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class="col-md-4 control-label bold" for="product_name">PRODUCT NAME</label>
+                            <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>
                             <div class="col-md-4">
                                 <input id="product_name" name="product_name" placeholder="Product Name"
                                        class="form-control input-md" required="" type="text" th:field="*{name}">
@@ -42,7 +42,7 @@
 
                         <!-- Select Basic -->
                         <div class="form-group">
-                            <label class="col-md-4 control-label bold" for="categories">PRODUCT CATEGORY</label>
+                            <label class="col-md-4 control-label" for="categories">PRODUCT CATEGORY</label>
                             <div class="col-md-4">
                                 <select id="categories" name="categories" class="form-control" th:field="*{category}">
                                     <option th:value="null">--SELECT--</option>
@@ -53,7 +53,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class="col-md-4 control-label bold" for="description">PRODUCT DESCRIPTION </label>
+                            <label class="col-md-4 control-label" for="description">PRODUCT DESCRIPTION </label>
                             <div class="col-md-4">
                                 <input id="description" name="description" placeholder="Product Description"
                                        class="form-control input-md" required="" type="text" th:field="*{description}">
@@ -62,9 +62,9 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class="col-md-4 control-label bold" for="quantity">AVAILABLE QUANTITY</label>
+                            <label class="col-md-4 control-label" for="available_quantity">AVAILABLE QUANTITY</label>
                             <div class="col-md-4">
-                                <input id="quantity" name="quantity"
+                                <input id="available_quantity" name="available_quantity"
                                        placeholder="Available Quantity" class="form-control input-md" required=""
                                        type="text" th:field="*{currentQuantity}">
                             </div>
@@ -72,7 +72,7 @@
 
                         <!-- Text input-->
                         <div class="form-group">
-                            <label class="col-md-4 control-label bold" for="price">PRICE</label>
+                            <label class="col-md-4 control-label" for="price">PRICE</label>
                             <div class="col-md-4">
                                 <input id="price" name="price"
                                        placeholder="Price" class="form-control input-md" required=""
@@ -82,9 +82,9 @@
 
                         <!-- File Button -->
                         <div class="form-group">
-                            <label class="col-md-4 control-label bold" for="product_image">Image</label>
+                            <label class="col-md-4 control-label bold" for="imageProduct">Image</label>
                             <div class="col-md-4">
-                                <input id="product_image" name="product_image" class="input-file" type="file">
+                                <input id="imageProduct" name="imageProduct" class="input-file" type="file">
                             </div>
                         </div>
                     </fieldset>

@@ -46,9 +46,9 @@ public class ProductController {
     }
 
     @PostMapping("/save-product")
-    public String saveProduct(@ModelAttribute("product") ProductDto productDto, @RequestParam("product_image") MultipartFile product_image, RedirectAttributes attributes) {
+    public String saveProduct(@ModelAttribute("product") ProductDto productDto, @RequestParam("imageProduct") MultipartFile imageProduct, RedirectAttributes attributes) {
         try {
-            productService.save(product_image, productDto);
+            productService.save(imageProduct, productDto);
             attributes.addFlashAttribute("success", "Add product successfully");
         } catch (Exception e) {
             e.printStackTrace();

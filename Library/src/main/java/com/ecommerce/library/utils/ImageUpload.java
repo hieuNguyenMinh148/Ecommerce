@@ -12,10 +12,10 @@ import java.nio.file.StandardCopyOption;
 public class ImageUpload {
     private final String UPLOAD_FOLDER = "E:\\Java_InteliJ\\Ecommerce\\Admin\\src\\main\\resources\\static\\img\\image-product";
 
-    public boolean uploadImage(MultipartFile product_image) {
+    public boolean uploadImage(MultipartFile imageProduct) {
         boolean isUpload = false;
         try {
-            Files.copy(product_image.getInputStream(), Paths.get(UPLOAD_FOLDER + File.separator, product_image.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(imageProduct.getInputStream(), Paths.get(UPLOAD_FOLDER + File.separator, imageProduct.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
             isUpload = true;
         } catch (Exception e) {
             e.printStackTrace();

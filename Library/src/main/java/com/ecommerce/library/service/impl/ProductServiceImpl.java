@@ -43,16 +43,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(MultipartFile product_image, ProductDto productDto) {
+    public Product save(MultipartFile imageProduct, ProductDto productDto) {
         try {
             Product product = new Product();
-            if (product_image == null) {
+            if (imageProduct == null) {
                 product.setImage(null);
             } else {
-                if (imageUpload.uploadImage(product_image)){
+                if (imageUpload.uploadImage(imageProduct)){
                     System.out.println("Upload done");
                 }
-                product.setImage(Base64.getEncoder().encodeToString(product_image.getBytes()));
+                product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
             }
             product.setName(productDto.getName());
             product.setDescription(productDto.getDescription());

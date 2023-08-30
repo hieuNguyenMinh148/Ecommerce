@@ -9,7 +9,7 @@ import java.util.List;
 public interface ProductService {
     List<ProductDto> findAll();
 
-    Product save(MultipartFile product_image, ProductDto productDto);
+    Product save(MultipartFile imageProduct, ProductDto productDto);
 
     Product update(ProductDto productDto);
 
