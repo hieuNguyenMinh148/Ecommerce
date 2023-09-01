@@ -6,6 +6,7 @@ import com.ecommerce.library.model.Product;
 import com.ecommerce.library.service.CategoryService;
 import com.ecommerce.library.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -89,7 +90,7 @@ public class ProductController {
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Enable Failed");
         }
-        return "redirect:/products";
+        return "redirect:/products/0";
     }
 
     @RequestMapping(value = "/delete-product/{id}", method = {RequestMethod.PUT, RequestMethod.GET})
@@ -101,6 +102,34 @@ public class ProductController {
             e.printStackTrace();
             attributes.addFlashAttribute("error", "Delete Failed");
         }
-        return "redirect:/products";
+        return "redirect:/products/0";
+    }
+
+    @GetMapping("/products/{pageNo}")
+    public String productPage(@PathVariable("pageNo") int pageNo, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Page<Product> products = productService.pageProduct(pageNo);
+        model.addAttribute("title", "Manage Product");
+        model.addAttribute("size", products.getSize());
+        model.addAttribute("totalPage", products.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("products", products);
+        return "/products";
+    }
+
+    @GetMapping("/search-result/{pageNo}")
+    public String searchProducts(@PathVariable("pageNo") int pageNo, @RequestParam("keyword") String keyword, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Page<Product> products = productService.searchProducts(pageNo, keyword);
+        model.addAttribute("title", "Search Result");
+        model.addAttribute("products", products);
+        model.addAttribute("size", products.getSize());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPage", products.getTotalPages());
+        return "/result-products";
     }
 }
