@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * FROM products", nativeQuery = true)
@@ -14,4 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT * FROM products WHERE description like %?1% or name like %?1%", nativeQuery = true)
     Page<Product> searchProducts(String keyword, Pageable pageable);
+
+    @Query(value ="SELECT * FROM products WHERE description like %?1% or name like %?1%", nativeQuery = true)
+    List<Product> searchProductsList(String keyword);
 }

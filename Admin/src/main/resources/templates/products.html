@@ -25,13 +25,8 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div>
-<!--                    <form th:action="@{/search-result/0}" method="GET">-->
-<!--                        <labe for="search"></labe>-->
-<!--                        <input type="text" name="keyword" id="search" placeholder="Search products here">-->
-<!--                        <button type="submit" class="btn btn-primary">Search</button>-->
-<!--                    </form>-->
-
-                    <form th:action="@{/search-result/0}" method="GET" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <form th:action="@{/search-result/0}" method="GET"
+                          class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                                    aria-label="Search" aria-describedby="basic-addon2" name="keyword">
@@ -83,9 +78,10 @@
                         <td><a th:href="@{/update-product/{id} (id = ${product.id})}" class="btn btn-primary">Update</a>
                         </td>
                         <td>
-                            <a th:if="${product.is_activated == false}"
+                            <a th:if="${product.activated == false}"
                                th:href="@{/enable-product/{id} (id = ${product.id})}" class="btn btn-warning">Enable</a>
-                            <a th:if="${product.is_deleted == false}" th:href="@{/delete-product/{id} (id = ${product.id})}"
+                            <a th:if="${product.delete == false}"
+                               th:href="@{/delete-product/{id} (id = ${product.id})}"
                                class="btn btn-danger">Delete</a>
                         </td>
                     </tr>

@@ -7,6 +7,7 @@ import com.ecommerce.library.service.ProductService;
 import com.ecommerce.library.utils.ImageUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,22 +25,20 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ImageUpload imageUpload;
 
-    @Override
-    public List<ProductDto> findAll() {
+    private List<ProductDto> transfer(List<Product> products) {
         List<ProductDto> productDtoList = new ArrayList<>();
-        List<Product> products = productRepository.findAll();
         for (Product product : products) {
             ProductDto productDto = new ProductDto();
             productDto.setId(product.getId());
             productDto.setName(product.getName());
             productDto.setDescription(product.getDescription());
             productDto.setCategory(product.getCategory());
-            productDto.setCostPrice(product.getCostPrice());
+            productDto.setCostPrice(productDto.getCostPrice());
             productDto.setSalePrice(product.getSalePrice());
-            productDto.setCurrentQuantity(product.getCurrentQuantity());
-            productDto.setActivated(product.is_activated());
-            productDto.setDelete(product.is_deleted());
             productDto.setImage(product.getImage());
+            productDto.setDelete(product.is_deleted());
+            productDto.setActivated(product.is_activated());
+            productDto.setCurrentQuantity(product.getCurrentQuantity());
             productDtoList.add(productDto);
         }
         return productDtoList;
@@ -116,17 +115,36 @@ public class ProductServiceImpl implements ProductService {
         return productDto;
     }
 
+    private Page toPage(List<ProductDto> list, Pageable pageable) {
+        if (pageable.getOffset() >= list.size()) {
+            return Page.empty();
+        }
+        int startIndex = (int) pageable.getOffset();
+        int endIndex = ((pageable.getOffset() + pageable.getPageSize()) > list.size()) ? list.size() : (int) (pageable.getOffset() + pageable.getPageSize());
+        List subList = list.subList(startIndex, endIndex);
+        return new PageImpl(subList, pageable, list.size());
+    }
+
     @Override
-    public Page<Product> pageProduct(int pageNo) {
+    public List<ProductDto> findAll() {
+        List<Product> products = productRepository.findAll();
+        List<ProductDto> productDtoList = transfer(products);
+        return productDtoList;
+    }
+
+    @Override
+    public Page<ProductDto> pageProduct(int pageNo) {
         Pageable pageable = PageRequest.of(pageNo, 5);
-        Page<Product> productPage = productRepository.pageProduct(pageable);
+        List<ProductDto> products = transfer(productRepository.findAll());
+        Page<ProductDto> productPage = toPage(products, pageable);
         return productPage;
     }
 
     @Override
-    public Page<Product> searchProducts(int pageNo, String keyword) {
+    public Page<ProductDto> searchProducts(int pageNo, String keyword) {
         Pageable pageable = PageRequest.of(pageNo, 5);
-        Page<Product> products = productRepository.searchProducts(keyword, pageable);
+        List<ProductDto> productDtoList = transfer(productRepository.searchProductsList(keyword));
+        Page<ProductDto> products = toPage(productDtoList, pageable);
         return products;
     }
 
@@ -138,6 +156,7 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+
     @Override
     public void enableById(Long id) {
         Product product = productRepository.getById(id);
@@ -145,4 +164,6 @@ public class ProductServiceImpl implements ProductService {
         product.set_deleted(false);
         productRepository.save(product);
     }
+
+
 }
