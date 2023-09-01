@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
             if (imageProduct == null) {
                 product.setImage(null);
             } else {
-                if (imageUpload.uploadImage(imageProduct)){
+                if (imageUpload.uploadImage(imageProduct)) {
                     System.out.println("Upload done");
                 }
                 product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
@@ -69,17 +69,63 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product update(ProductDto productDto) {
+    public Product update(MultipartFile imageProduct, ProductDto productDto) {
+        try {
+            Product product = productRepository.getById(productDto.getId());
+            if (imageProduct.isEmpty()) {
+                System.out.println("null");
+                product.setImage(product.getImage());
+            } else {
+                if (imageUpload.checkExisted(imageProduct) == false) {
+                    imageUpload.uploadImage(imageProduct);
+                }
+                product.setImage(Base64.getEncoder().encodeToString(imageProduct.getBytes()));
+            }
+            product.setName(productDto.getName());
+            product.setDescription(productDto.getDescription());
+            product.setCostPrice(productDto.getCostPrice());
+            product.setCategory(productDto.getCategory());
+            product.setCurrentQuantity(productDto.getCurrentQuantity());
+            product.setSalePrice(productDto.getSalePrice());
+            return productRepository.save(product);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         return null;
     }
 
     @Override
-    public void deleteById(Long id) {
+    public ProductDto getById(Long id) {
+        Product product = productRepository.getById(id);
+        ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
+        productDto.setName(product.getName());
+        productDto.setDescription(product.getDescription());
+        productDto.setCategory(product.getCategory());
+        productDto.setCostPrice(productDto.getCostPrice());
+        productDto.setSalePrice(product.getSalePrice());
+        productDto.setImage(product.getImage());
+        productDto.setDelete(product.is_deleted());
+        productDto.setActivated(product.is_activated());
+        productDto.setCurrentQuantity(product.getCurrentQuantity());
+        return productDto;
+    }
 
+    @Override
+    public void deleteById(Long id) {
+        Product product = productRepository.getById(id);
+        product.set_deleted(true);
+        product.set_activated(false);
+        productRepository.save(product);
     }
 
     @Override
     public void enableById(Long id) {
-
+        Product product = productRepository.getById(id);
+        product.set_activated(true);
+        product.set_deleted(false);
+        productRepository.save(product);
     }
 }

@@ -11,7 +11,9 @@ public interface ProductService {
 
     Product save(MultipartFile imageProduct, ProductDto productDto);
 
-    Product update(ProductDto productDto);
+    Product update(MultipartFile imageProduct, ProductDto productDto);
+
+    ProductDto getById(Long id);
 
     void deleteById(Long id);
 
