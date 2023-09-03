@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
             productDto.setName(product.getName());
             productDto.setDescription(product.getDescription());
             productDto.setCategory(product.getCategory());
-            productDto.setCostPrice(productDto.getCostPrice());
+            productDto.setCostPrice(product.getCostPrice());
             productDto.setSalePrice(product.getSalePrice());
             productDto.setImage(product.getImage());
             productDto.setDelete(product.is_deleted());
@@ -66,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
             return productRepository.save(product);
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Failed to upload image");
             return null;
         }
     }
