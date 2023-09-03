@@ -25,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ImageUpload imageUpload;
 
+    /*ADMIN*/
     private List<ProductDto> transfer(List<Product> products) {
         List<ProductDto> productDtoList = new ArrayList<>();
         for (Product product : products) {
@@ -164,6 +165,13 @@ public class ProductServiceImpl implements ProductService {
         product.set_activated(true);
         product.set_deleted(false);
         productRepository.save(product);
+    }
+
+
+    /*CUSTOMER*/
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.getAllProducts();
     }
 
 

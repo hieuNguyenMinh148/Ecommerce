@@ -17,6 +17,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * FROM products WHERE description like %?1% or name like %?1%", nativeQuery = true)
     Page<Product> searchProducts(String keyword, Pageable pageable);
 
-    @Query(value ="SELECT * FROM products WHERE description like %?1% or name like %?1%", nativeQuery = true)
+    @Query(value = "SELECT * FROM products WHERE description like %?1% or name like %?1%", nativeQuery = true)
     List<Product> searchProductsList(String keyword);
+
+    @Query(value ="SELECT * FROM products WHERE is_activated = true and is_deleted = false", nativeQuery = true)
+    List<Product> getAllProducts();
 }

@@ -18,13 +18,13 @@
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <!-- Site CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <!-- Responsive CSS -->
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
 <!-- Start Main Top -->
@@ -101,13 +101,13 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
-                    <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="index.html">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                    <li class="nav-item active"><a class="nav-link" th:href="@{/home}">Menu</a></li>
 
                     <li class="dropdown">
                         <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Shop</a>
                         <ul class="dropdown-menu">
-                            <li><a href="shop.html">Shop Detail</a></li>
+                            <li><a th:href="@{/products}">Shop Detail</a></li>
                             <li><a href="product-detail.html">Product Detail</a></li>
                             <li><a href="cart.html">Cart</a></li>
                             <li><a href="checkout.html">Checkout</a></li>
@@ -168,6 +168,35 @@
     <!-- End Navigation -->
 </header>
 <!-- End Header -->
+
+<!--Product Filter-->
+<div class="product-item-filter row" th:fragment="filter">
+    <div class="col-12 col-sm-8 text-center text-sm-left">
+        <div class="toolbar-sorter-right">
+            <span>Sort by </span>
+            <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">
+                <option data-display="Select">Nothing</option>
+                <option value="2">High Price → High Price</option>
+                <option value="3">Low Price → High Price</option>
+                <option value="4">Best Selling</option>
+            </select>
+        </div>
+        <p>Showing all results</p>
+    </div>
+    <div class="col-12 col-sm-4 text-center text-sm-right">
+        <ul class="nav nav-tabs ml-auto">
+            <li>
+                <a class="nav-link active" href="#grid-view" data-toggle="tab"> <i
+                        class="fa fa-th"></i> </a>
+            </li>
+            <li>
+                <a class="nav-link" href="#list-view" data-toggle="tab"> <i
+                        class="fa fa-list-ul"></i> </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- End Product Filter-->
 
 <!-- Start Top Search -->
 <div class="top-search" th:fragment="search">
@@ -290,21 +319,21 @@
 
 <div th:fragment="script">
     <!-- ALL JS FILES -->
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
     <!-- ALL PLUGINS -->
-    <script src="js/jquery.superslides.min.js"></script>
-    <script src="js/bootstrap-select.js"></script>
-    <script src="js/inewsticker.js"></script>
-    <script src="js/bootsnav.js."></script>
-    <script src="js/images-loded.min.js"></script>
-    <script src="js/isotope.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/baguetteBox.min.js"></script>
-    <script src="js/form-validator.min.js"></script>
-    <script src="js/contact-form-script.js"></script>
-    <script src="js/custom.js"></script>
+    <script th:src="@{/js/jquery.superslides.min.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/inewsticker.js}"></script>
+    <script th:src="@{/js/bootsnav.js.}"></script>
+    <script th:src="@{/js/images-loded.min.js}"></script>
+    <script th:src="@{/js/isotope.min.js}"></script>
+    <script th:src="@{/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/js/baguetteBox.min.js}"></script>
+    <script th:src="@{/js/form-validator.min.js}"></script>
+    <script th:src="@{/js/contact-form-script.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
 </div>
 </body>
 </html>

@@ -34,4 +34,6 @@ public class HomeController {
         model.addAttribute("products", productDto);
         return "/index";
     }
+
+
 }
