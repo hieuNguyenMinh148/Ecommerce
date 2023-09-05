@@ -48,6 +48,13 @@
             <div class="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
                 <div class="right-product-box">
                     <div th:replace="fragment :: filter"></div>
+                    <div class="row" style="margin-bottom: -20px;">
+                        <div class="col-lg-12">
+                            <div class="title-all text-center">
+                                <h1 th:text="${category.name}"></h1>
+                            </div>
+                        </div>
+                    </div>
                     <!--All Products-->
                     <div class="product-categorie-box">
                         <div class="tab-content">
