@@ -987,7 +987,7 @@ ul.cart-list > li.total > .btn:hover{
     padding: 5px 10px;
     display: block;
 }
-.mask-icon a.cart{
+.mask-icon input.cart{
     background: #b0b435;
     position: absolute;
     bottom: 0;
@@ -996,7 +996,7 @@ ul.cart-list > li.total > .btn:hover{
     font-weight: 700;
     color: #ffffff;
 }
-.mask-icon a.cart:hover{
+.mask-icon input.cart:hover{
     background: #000000;
     color: #ffffff;
 }

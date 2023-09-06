@@ -22,7 +22,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartRepository shoppingCartRepository;
 
     @Override
-    public ShoppingCart addItemIntoCart(Product product, int quantity, Customer customer) {
+    public ShoppingCart addItemToCart(Product product, int quantity, Customer customer) {
         ShoppingCart cart = customer.getShoppingCart();
 
         if (cart == null) {
@@ -61,8 +61,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         int totalItems = totalItems(cart.getCartItem());
         double totalPrice = totalPrice(cart.getCartItem());
 
-        cart.setTotalPrice(totalPrice);
-        cart.setTotalItem(totalItems);
+        cart.setTotalPrices(totalPrice);
+        cart.setTotalItems(totalItems);
         cart.setCustomer(customer);
 
         return shoppingCartRepository.save(cart);
@@ -84,8 +84,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         int totalItems = totalItems(cartItems);
         double totalPrice = totalPrice(cartItems);
 
-        cart.setTotalItem(totalItems);
-        cart.setTotalPrice(totalPrice);
+        cart.setTotalItems(totalItems);
+        cart.setTotalPrices(totalPrice);
 
         return shoppingCartRepository.save(cart);
     }
@@ -106,8 +106,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         int totalItems = totalItems(cartItems);
 
         cart.setCartItem(cartItems);
-        cart.setTotalItem(totalItems);
-        cart.setTotalPrice(totalPrice);
+        cart.setTotalItems(totalItems);
+        cart.setTotalPrices(totalPrice);
 
         return shoppingCartRepository.save(cart);
     }

@@ -17,8 +17,8 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shopping_cart_id")
     private Long id;
-    private int totalItem;
-    private double totalPrice;
+    private int totalItems;
+    private double totalPrices;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
