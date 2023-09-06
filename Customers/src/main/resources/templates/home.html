@@ -18,9 +18,49 @@
 <!-- End Top Search -->
 
 <!-- Start Slider -->
-<div th:replace="fragment :: slider"></div>
-<!-- End Slider -->
+<div id="slides-shop" class="cover-slides">
+    <ul class="slides-container">
+        <li class="text-center">
+            <img th:src="@{images/Fish 01 - Fish Tacos.jpg}" alt="">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="m-b-20"><strong>Welcome To <br> Ocean Prime Seafoods</strong></h1>
+                        <p class="m-b-40">Enjoy your meal! <br> Have you a good, fun working day and delicious meal!</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="text-center">
+            <img th:src="@{images/Crab 02 - Crab Toast.jpg}" alt="">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="m-b-20"><strong>Welcome To <br> Ocean Prime Seafoods</strong></h1>
+                        <p class="m-b-40">Enjoy your meal! <br> Have you a good, fun working day and delicious meal!</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="text-center">
+            <img th:src="@{images/Shrimp 01 - Shrimp Monterey.jpg}" alt="">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
 
+                        <h1 class="m-b-20"><strong>Welcome To <br> Ocean Prime Seafoods</strong></h1>
+                        <p class="m-b-40">Enjoy your meal! <br> Have you a good, fun working day and delicious meal!</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="slides-navigation">
+        <a href="#" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+        <a href="#" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+    </div>
+</div>
+<!-- End Slider -->
 
 <!-- Start About Page  -->
 <div class="about-box-main">
@@ -84,6 +124,9 @@
 <!-- Start Footer  -->
 <footer th:replace="fragment :: footer"></footer>
 <!-- End Footer  -->
+
+<!-- End All Title Box -->
+<div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
 
 <!--JS files-->
 <div th:replace="fragment :: script"></div>

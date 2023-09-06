@@ -37,26 +37,22 @@
 <!-- End Header -->
 
 <!-- Start Top Search -->
-<div th:replace="fragment::search"></div>
+<div th:replace="fragment :: search"></div>
 <!-- End Top Search -->
-
-<!-- Start Slider -->
-<div th:replace="fragment :: slider"></div>
-<!-- End Slider -->
 
 <section id="login-form">
     <div class="noi-dung">
         <div class="form">
             <h2>Log In</h2>
-            <div  class="text-center alert alert-warning">
+            <div th:if="${param.error}" class="text-center alert alert-danger">
                 <p>Invalid username or password</p>
             </div>
 
-            <div  class="text-center alert alert-success">
+            <div th:if="${param.logout}" class="text-center alert alert-success">
                 <p>You have been logged out</p>
             </div>
 
-            <form  method="post">
+            <form th:action="@{/do-login}" method="POST">
                 <div class="input-form">
                     <!-- <span>User name</span> -->
                     <input type="text" placeholder="Name" name="username">
@@ -69,7 +65,7 @@
                     <input type="submit" value="Log In">
                 </div>
                 <div class="input-form">
-                    <p>Do You Already Have An Account ? <a >Sign up now </a></p>
+                    <p>Do You Already Have An Account ? <a th:href="@{/register}" >Sign up now </a></p>
                 </div>
             </form>
             <h3>Log In With Social Network</h3>
@@ -85,10 +81,15 @@
 
 
 <!-- Start All Title Box -->
-<div th:replace="fragment::instagram-box">
-</div>
+<div th:replace="fragment::instagram-box"></div>
+
+<!-- Start Footer  -->
+<footer th:replace="fragment :: footer"></footer>
+<!-- End Footer  -->
+
 <!-- End All Title Box -->
-<a href="#" id="back-to-top" title="Back to top" style="display: none;">&uarr;</a>
+<div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
+
 
 <!-- ALL JS FILES -->
 <div th:replace="fragment::script"></div>

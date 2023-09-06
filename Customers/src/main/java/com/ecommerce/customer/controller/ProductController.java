@@ -21,14 +21,14 @@ public class ProductController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/products")
-    public String products(Model model) {
-        List<CategoryDto> categoryDtoList = categoryService.getCategoryAndProduct();
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("products", products);
-        model.addAttribute("categories", categoryDtoList);
-        return "shop-detail";
-    }
+//    @GetMapping("/products")
+//    public String products(Model model) {
+//        List<CategoryDto> categoryDtoList = categoryService.getCategoryAndProduct();
+//        List<Product> products = productService.getAllProducts();
+//        model.addAttribute("products", products);
+//        model.addAttribute("categories", categoryDtoList);
+//        return "shop-detail";
+//    }
 
     @GetMapping("/product-detail/{id}")
     public String findProductById(@PathVariable("id") Long id, Model model) {
@@ -37,6 +37,7 @@ public class ProductController {
         List<Product> products = productService.getRelatedProducts(categoryId);
         model.addAttribute("products", products);
         model.addAttribute("product", product);
+        model.addAttribute("title", "product detail");
         return "product-detail";
     }
 

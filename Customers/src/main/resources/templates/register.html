@@ -17,52 +17,53 @@
 <!-- End Header -->
 
 <!-- Start Top Search -->
-<div th:replace="fragment::search"></div>
+<div th:replace="fragment :: search"></div>
 <!-- End Top Search -->
-
 
 <section id="register-form">
     <div class="noi-dung">
         <div class="form">
             <h2>Register</h2>
-            <div  class="text-center alert alert-danger">
-                <p ></p>
+            <div th:if="${error}" class="text-center alert alert-danger">
+                <p th:text="${error}"></p>
             </div>
-            <div  class="text-center alert-warning">
-                <p></p>
+            <div th:if="${username}" class="text-center alert alert-warning">
+                <p th:text="${username}"></p>
             </div>
-            <div class="text-center alert-warning">
-                <p ></p>
+            <div th:if="${password}" class="text-center alert alert-warning">
+                <p th:text="${password}"></p>
             </div>
-            <div  class="text-center alert-success">
-                <p ></p>
+            <div th:if="${success}" class="text-center alert alert-success">
+                <p th:text="${success}"></p>
             </div>
-            <form  method="post" >
+
+            <form th:action="@{/do-register}" method="POST" th:object="${customerDto}">
                 <div class="input-form">
                     <!-- <span>User name</span> -->
-                    <input type="text"  placeholder="First Name" name="">
+                    <input type="text" th:field="*{firstName}" placeholder="First Name" name="">
                 </div>
-                <div class="alert alert-danger"></div>
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"
+                     th:errors="*{firstName}"></div>
                 <div class="input-form">
                     <!-- <span>User name</span> -->
-                    <input type="text" placeholder="Last Name" name="">
+                    <input type="text" th:field="*{lastName}" placeholder="Last Name" name="">
                 </div>
-                <div class="alert alert-danger"></div>
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
                 <div class="input-form">
                     <!-- <span>User name</span> -->
-                    <input type="email" placeholder="Username" name="">
+                    <input type="email" th:field="*{username}" placeholder="Username" name="">
                 </div>
                 <div class="input-form">
                     <!-- <span>Password</span> -->
-                    <input type="password"  placeholder="Password" name="">
+                    <input type="password" th:field="*{password}" placeholder="Password" name="">
                 </div>
-                <div class="alert alert-danger"></div>
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors = "*{password}"></div>
                 <div class="input-form">
                     <!-- <span>Password</span> -->
-                    <input type="password"  placeholder="Verify password" name="">
+                    <input type="password" th:field="*{repeatPassword}" placeholder="Verify password" name="">
                 </div>
                 <div class="input-form">
-                    <p>Do You Already Have An Account ? <a > Sign in now </a></p>
+                    <p>Do You Already Have An Account ? <a th:href="@{/login}"> Sign in now </a></p>
                 </div>
                 <div class="input-form">
                     <input type="submit" value="Sign up">
@@ -78,6 +79,19 @@
     </div>
 
 </section>
+
+<!-- Start Feed  -->
+<div class="instagram-box" th:replace="fragment :: instagram-box"></div>
+<!-- End Feed  -->
+
+<!-- Start Footer  -->
+<footer th:replace="fragment :: footer"></footer>
+<!-- End Footer  -->
+
+<!-- End All Title Box -->
+<div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
+
+
 <!-- ALL JS FILES -->
 <div th:replace="fragment::script"></div>
 </body>

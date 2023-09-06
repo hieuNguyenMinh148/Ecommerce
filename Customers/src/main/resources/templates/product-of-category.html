@@ -32,8 +32,8 @@
             <div class="col-lg-12">
                 <h2>Shop Detail</h2>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="home.html">Home</a></li>
-                    <li class="breadcrumb-item active"> Shop Detail</li>
+                    <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                    <li class="breadcrumb-item active">Shop Detail</li>
                 </ul>
             </div>
         </div>
@@ -150,6 +150,10 @@
 <!-- Start Footer  -->
 <footer th:replace="fragment :: footer"></footer>
 <!-- End Footer  -->
+
+<!-- End All Title Box -->
+<div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
+
 
 <!--JS files-->
 <div th:replace="fragment :: script"></div>

@@ -18,7 +18,6 @@ public class CartItem {
     private Long id;
     private int quantity;
     private double totalPrice;
-    private double unitPrice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "shopping_cart_id", referencedColumnName = "shopping_cart_id")

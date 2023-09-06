@@ -46,9 +46,11 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="login-box">
-                    <select id="" class="selectpicker show-tick form-control" data-placeholder="Sign In">
-                        <option value="http://localhost:8090/shop/login">Sign In </option>
-                        <option value="http://localhost:8090/shop/register">Sign Up </option>
+                    <select id="" class="selectpicker show-tick form-control" data-placeholder="Sign In" onchange="location = this.value;">
+                        <option th:text="${session.username != null} ? ${session.username} : 'Authentication'"></option>
+                        <option th:if="${session.username == null}" value="http://localhost:8090/shop/login">Sign In</option>
+                        <option th:if="${session.username != null}" value="http://localhost:8090/shop/logout">Log out</option>
+                        <option th:if="${session.username == null}" value="http://localhost:8090/shop/register">Sign Up</option>
                     </select>
                 </div>
                 <div class="text-slid-box">
@@ -127,7 +129,7 @@
                 <ul>
                     <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
                     <li class="side-menu">
-                        <a href="#">
+                        <a th:href="@{/cart}">
                             <i class="fa fa-shopping-bag"></i>
                             <span class="badge">3</span>
                             <p>My Cart</p>
@@ -143,19 +145,21 @@
             <li class="cart-box">
                 <ul class="cart-list">
                     <li>
-                        <a href="#" class="photo"><img th:src="@{images/Lobster 02 - Lobster rolls.jpg}" class="cart-thumb"
-                                                       alt=""/></a>
+                        <a href="#" class="photo"><img th:src="@{images/Lobster 02 - Lobster rolls.jpg}"
+                                                       class="cart-thumb" alt=""/></a>
                         <h6><a href="#">Lobster rolls </a></h6>
                         <p>1 - <span class="price">$80.00</span></p>
                     </li>
                     <li>
-                        <a href="#" class="photo"><img th:src="@{images/Octopus 05 - Octopus with Black Bean Pear Sauce.jpg}"
-                                                       class="cart-thumb" alt=""/></a>
+                        <a href="#" class="photo"><img
+                                th:src="@{images/Octopus 05 - Octopus with Black Bean Pear Sauce.jpg}"
+                                class="cart-thumb" alt=""/></a>
                         <h6><a href="#">Octopus with Black Bean</a></h6>
                         <p>1 - <span class="price">$60.00</span></p>
                     </li>
                     <li>
-                        <a href="#" class="photo"><img th:src="@{/images/Crab 02 - Crab Toast.jpg}" class="cart-thumb" alt=""/></a>
+                        <a href="#" class="photo"><img th:src="@{images/Crab 02 - Crab Toast.jpg}" class="cart-thumb"
+                                                       alt=""/></a>
                         <h6><a href="#">Crab Toast</a></h6>
                         <p>1 - <span class="price">$40.00</span></p>
                     </li>
@@ -209,22 +213,6 @@
     </div>
 </div>
 <!-- End Top Search -->
-
-<!-- Start Slider -->
-<div class="all-title-box" th:fragment="slider">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h2>Menu</h2>
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="home.html">Home</a></li>
-                    <li class="breadcrumb-item active"> Menu</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End Slider -->
 
 <!-- Start Feed  -->
 <div class="instagram-box" th:fragment="instagram-box">
