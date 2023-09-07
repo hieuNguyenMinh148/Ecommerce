@@ -64,7 +64,8 @@
                         <tr th:each="cartItem : ${shoppingCart.cartItem}">
                             <td class="thumbnail-img">
                                 <a href="#">
-                                    <img class="img-fluid" th:src="'data:image/jpeg;base64,' + ${cartItem.product.image}" alt=""/>
+                                    <img class="img-fluid"
+                                         th:src="'data:image/jpeg;base64,' + ${cartItem.product.image}" alt=""/>
                                 </a>
                             </td>
                             <td class="name-pr">
@@ -73,15 +74,20 @@
                             <td class="price-pr">
                                 <p th:text="'$ ' + ${cartItem.product.costPrice}"></p>
                             </td>
-                            <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text" th:value="${cartItem.quantity}"></td>
-                            <td class="total-pr">
-                                <p th:text="'$ ' + ${cartItem.totalPrice}"></p>
-                            </td>
-                            <td class="remove-pr">
-                                <a href="#">
-                                    <i class="fas fa-times"></i>
-                                </a>
-                            </td>
+                            <form th:action="@{/update-cart}" method="POST">
+                                <input type="hidden" name="id" th:value="${cartItem.product.id}">
+                                <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1" class="c-input-text qty text" th:value="${cartItem.quantity}" name="quantity"></td>
+                                <td class="total-pr">
+                                    <p th:text="'$ ' + ${cartItem.totalPrice}"></p>
+                                </td>
+                                <td class="remove-pr">
+<!--                                    <a href="#">-->
+<!--                                        <i class="fas fa-times"></i>-->
+<!--                                    </a>-->
+                                    <button type="submit" name="action" value="update" title="Update" class="btn btn-primary">Update</button>
+                                    <button type="submit" name="action" value="delete" title="Delete" class="btn btn-warning">Delete</button>
+                                </td>
+                            </form>
                         </tr>
                         </tbody>
                     </table>

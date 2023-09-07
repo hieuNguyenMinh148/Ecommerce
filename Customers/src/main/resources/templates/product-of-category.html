@@ -62,24 +62,29 @@
                             <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
                                 <div class="row">
                                     <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="product : ${products}">
-                                        <div class="products-single fix">
-                                            <div class="box-img-hover">
-                                                <img th:src="'data:image/jpeg;base64,' + ${product.image}"
-                                                     class="img-fluid" alt="Image">
-                                                <div class="mask-icon">
-                                                    <ul>
-                                                        <li><a th:href="@{/product-detail/{id} (id = ${product.id})}" data-toggle="tooltip"
-                                                               data-placement="right" title="View"><i
-                                                                class="fas fa-eye"></i></a></li>
-                                                    </ul>
-                                                    <a class="cart" href="#">Add to Cart</a>
+                                        <form th:action="@{/add-to-cart}" method="POST">
+                                            <div class="products-single fix">
+                                                <div class="box-img-hover">
+                                                    <img th:src="'data:image/jpeg;base64,' + ${product.image}"
+                                                         class="img-fluid" alt="Image">
+                                                    <div class="mask-icon">
+                                                        <ul>
+                                                            <li>
+                                                                <a th:href="@{/product-detail/{id} (id = ${product.id})}"
+                                                                   data-toggle="tooltip"
+                                                                   data-placement="right" title="View"><i
+                                                                        class="fas fa-eye"></i></a></li>
+                                                        </ul>
+                                                        <input type="hidden" th:value="${product.id}" name="id">
+                                                        <input class="cart btn" type="submit" value="Add to Cart">
+                                                    </div>
+                                                </div>
+                                                <div class="why-text">
+                                                    <h4 th:text="${product.name}"></h4>
+                                                    <h5 th:text="'$'+${product.costPrice}"></h5>
                                                 </div>
                                             </div>
-                                            <div class="why-text">
-                                                <h4 th:text="${product.name}"></h4>
-                                                <h5 th:text="'$'+${product.costPrice}"></h5>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -87,25 +92,27 @@
                             <!--List View-->
                             <div role="tabpanel" class="tab-pane fade" id="list-view">
                                 <div class="list-view-box" th:each="product : ${products}">
-                                    <div class="row">
-                                        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                            <div class="products-single fix">
-                                                <div class="box-img-hover">
-                                                    <img th:src="'data:image/jpeg;base64,' + ${product.image}"
-                                                         class="img-fluid" alt="Image">
+                                    <form th:action="@{/add-to-cart}" method="POST">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                                <div class="products-single fix">
+                                                    <div class="box-img-hover">
+                                                        <img th:src="'data:image/jpeg;base64,' + ${product.image}"
+                                                             class="img-fluid" alt="Image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                                                <div class="why-text full-width" style="height: 100%;">
+                                                    <h4 th:text="${product.name}"></h4>
+                                                    <h5 th:text="'$'+${product.costPrice}"></h5>
+                                                    <p th:text="${product.description}"></p>
+                                                    <input type="hidden" th:value="${product.id}" name="id">
+                                                    <input class="cart btn hvr-hover" type="submit" value="Add to Cart">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
-                                            <div class="why-text full-width" style="height: 100%;">
-                                                <h4 th:text="${product.name}"></h4>
-                                                <h5 th:text="'$'+${product.costPrice}"></h5>
-                                                <p th:text="${product.description}"></p>
-                                                <a class="btn hvr-hover" href="#">Add to Cart</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -126,8 +133,10 @@
                             <h3>Categories</h3>
                         </div>
                         <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men"
-                             data-children=".sub-men" >
-                            <a th:href="@{/product-of-category/{id} (id = ${category.categoryId})}" class="list-group-item list-group-item-action" th:each="category : ${categories}">[[${category.categoryName}]] <small class="text-muted">([[${category.numberOfProduct}]])</small></a>
+                             data-children=".sub-men">
+                            <a th:href="@{/product-of-category/{id} (id = ${category.categoryId})}"
+                               class="list-group-item list-group-item-action" th:each="category : ${categories}">[[${category.categoryName}]]
+                                <small class="text-muted">([[${category.numberOfProduct}]])</small></a>
 
                         </div>
                     </div>

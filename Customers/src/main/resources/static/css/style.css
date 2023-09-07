@@ -89,7 +89,7 @@ a {
     text-decoration: none;
     outline: none;
 }
-a, .btn {
+input, .btn {
     text-decoration: none !important;
     outline: none !important;
     -webkit-transition: all .3s ease-in-out;
