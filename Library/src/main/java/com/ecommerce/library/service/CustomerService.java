@@ -7,4 +7,6 @@ public interface CustomerService {
     CustomerDto save(CustomerDto customerDto);
 
     Customer findByUsername(String username);
+
+    Customer saveInformation(Customer customer);
 }

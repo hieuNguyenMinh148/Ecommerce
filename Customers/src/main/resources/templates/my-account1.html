@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<!-- Basic -->
+
+<head th:replace="fragment :: head"></head>
+
+<body>
+<!-- Start Main Top -->
+<div class="main-top" th:replace="fragment :: main-top"></div>
+<!-- End Main Top -->
+
+<!-- Start Header -->
+<header th:replace="fragment :: main-header"></header>
+<!-- End Header -->
+
+<!-- Start Top Search -->
+<div th:replace="fragment :: search"></div>
+<!-- End Top Search -->
+
+<!-- Start All Title Box -->
+<div class="all-title-box">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>My Account</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                    <li class="breadcrumb-item active">My Account</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End All Title Box -->
+<div class="mainDiv">
+    <div class="cardStyle">
+        <div th:if="${error}" class="alert alert-warning text-center">
+            <p th:text="${error}"></p>
+        </div>
+
+
+        <form th:action="@{/update-information}" method="POST" name="signupForm" id="signupForm"
+              th:object="${customer}">
+
+            <img src="" id="signupLogo"/>
+
+            <h2 class="formTitle">
+                <i>Personal Information</i>
+            </h2>
+
+            <input type="text" th:field="*{id}" id="id" name="id" hidden>
+
+            <div class="inputDiv">
+                <label class="inputLabel" for="firstname"> First name * </label>
+                <input type="text" th:field="*{firstName}" id="firstname" name="firstname" required>
+            </div>
+
+            <div class="inputDiv">
+                <label class="inputLabel" for="lastname">Last name *</label>
+                <input type="text" th:field="*{lastName}" id="lastname" name="lastname" required>
+            </div>
+
+            <!--          <div class="inputDiv">-->
+            <!--            <label class="inputLabel" for="username">User name *</label>-->
+            <!--            <input type="text" id="username" name="username">-->
+            <!--          </div>-->
+
+            <!--          <div class="inputDiv">-->
+            <!--            <label class="inputLabel" for="confirmPassword">Password *</label>-->
+            <!--            <input type="password" id="confirmPassword" name="confirmPassword">-->
+            <!--          </div>-->
+
+            <div class="inputDiv">
+                <label class="inputLabel" for="phone">Phone number *</label>
+                <input type="text" th:field="*{phoneNumber}" id="phone" name="phone">
+            </div>
+
+            <div class="inputDiv">
+                <label class="inputLabel" for="address">Address *</label>
+                <input type="text" th:field="*{address}" id="address" name="address">
+            </div>
+
+            <div class="inputDiv">
+                <label class="inputLabel" for="city">City *</label>
+                <input type="text" th:field="*{city}" id="city" name="city">
+            </div>
+
+            <div class="inputDiv">
+                <label class="inputLabel" for="country">Country *</label>
+                <input type="text" th:field="*{country}" id="country" name="country">
+            </div>
+
+            <div class="buttonWrapper">
+                <button type="submit" id="submitButton" class="submitButton pure-button pure-button-primary">
+                    <span>Save</span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+</section>
+
+<!--    &lt;!&ndash; Start copyright  &ndash;&gt;-->
+<!--    <div class="footer-copyright">-->
+<!--        <p class="footer-company">All Rights Reserved. &copy; 2021 <a href="#">Ocean Pream</a> Design By: SE2</a></p>-->
+<!--    </div>-->
+<!--    -->
+<!--    &lt;!&ndash; End copyright  &ndash;&gt;-->
+
+<!-- Start Footer  -->
+<footer th:replace="fragment :: footer"></footer>
+<!-- End Footer  -->
+
+<!-- End All Title Box -->
+<div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
+
+<!--JS files-->
+<div th:replace="fragment :: script"></div>
+</body>
+
+</html>

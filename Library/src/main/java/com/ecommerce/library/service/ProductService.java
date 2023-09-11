@@ -36,6 +36,8 @@ public interface ProductService {
 
     List<Product> getProductInCategory(Long categoryId);
 
+    List<ProductDto> findAllActivated();
+
 //    List<Product> filterHighPrice();
 //
 //    List<Product> filterLowPrice();

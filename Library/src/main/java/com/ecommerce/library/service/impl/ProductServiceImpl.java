@@ -44,6 +44,27 @@ public class ProductServiceImpl implements ProductService {
         }
         return productDtoList;
     }
+/*CUSTOMER*/
+    private List<ProductDto> transferActivated(List<Product> products) {
+        List<ProductDto> productDtoList = new ArrayList<>();
+        for (Product product : products) {
+            if (product.is_activated()==true){
+                ProductDto productDto = new ProductDto();
+                productDto.setId(product.getId());
+                productDto.setName(product.getName());
+                productDto.setDescription(product.getDescription());
+                productDto.setCategory(product.getCategory());
+                productDto.setCostPrice(product.getCostPrice());
+                productDto.setSalePrice(product.getSalePrice());
+                productDto.setImage(product.getImage());
+                productDto.setDelete(product.is_deleted());
+                productDto.setActivated(product.is_activated());
+                productDto.setCurrentQuantity(product.getCurrentQuantity());
+                productDtoList.add(productDto);
+            }
+        }
+        return productDtoList;
+    }
 
     @Override
     public Product save(MultipartFile imageProduct, ProductDto productDto) {
@@ -189,7 +210,14 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.getProductInCategory(categoryId);
     }
 
-//    @Override
+    @Override
+    public List<ProductDto> findAllActivated() {
+        List<Product> products = productRepository.findAll();
+        List<ProductDto> productDtoList = transferActivated(products);
+        return productDtoList;
+    }
+
+    //    @Override
 //    public List<Product> filterHighPrice() {
 //        return productRepository.filterHighPrice();
 //    }
