@@ -2,30 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <!-- Basic -->
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Freshshop - Ecommerce Bootstrap 4 HTML Template</title>
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- Site CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Responsive CSS -->
-    <link rel="stylesheet" href="css/responsive.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/custom.css">
-
-</head>
+<head th:replace="fragment :: head"></head>
 
 <body>
 <!-- Start Main Top -->
@@ -48,7 +25,7 @@
                 <p>Invalid username or password</p>
             </div>
 
-            <div th:if="${param.logout}" class="text-center alert alert-success">
+            <div th:if="${param.logout}" class="text-center alert alert-success col-2 right" id="success">
                 <p>You have been logged out</p>
             </div>
 

@@ -21,11 +21,12 @@ public class Order {
     private Date orderDate;
     private Date deliveryDate;
     private double totalPrice;
-    private double shippingFee;
-    private String orderStatus;
+    private double tax;
     private String notes;
+    private String orderStatus;
+    private boolean isAccepted;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
     private Customer customer;
 

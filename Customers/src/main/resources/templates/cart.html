@@ -128,7 +128,8 @@
                     <h3>Order summary</h3>
                     <div class="d-flex">
                         <h4>Sub Total</h4>
-                        <div class="ml-auto font-weight-bold" th:text="${subTotal == null} ? '$0' : '$' + ${subTotal}"></div>
+                        <div class="ml-auto font-weight-bold"
+                             th:text="${subTotal == null} ? '$0' : '$' + ${subTotal}"></div>
                     </div>
                     <div class="d-flex">
                         <h4>Discount</h4>
@@ -142,14 +143,21 @@
                     <hr>
                     <div class="d-flex gr-total">
                         <h5>Grand Total</h5>
-                        <div class="ml-auto font-weight-bold" th:text="${subTotal == null} ? '$0' : '$' + ${subTotal}"></div>
+                        <div class="ml-auto font-weight-bold"
+                             th:text="${subTotal == null} ? '$0' : '$' + ${subTotal}"></div>
                     </div>
                     <hr>
                 </div>
             </div>
-            <div class="col-12 d-flex shopping-box"><a th:href="@{/check-out}"
-                                                       class="ml-auto btn hvr-hover">Checkout</a>
+            <div class="col-12 d-flex shopping-box">
+                <a th:href="@{/check-out}" th:id="${check} ? 'errorEmpty' : ''"
+                   class="ml-auto btn hvr-hover">Checkout</a>
             </div>
+            <div class="col-12 text-right" id="errorMessage" style="margin-top: 5px;
+            color: red; display: none;">
+                <p>Your cart is empty</p>
+            </div>
+
         </div>
 
     </div>
