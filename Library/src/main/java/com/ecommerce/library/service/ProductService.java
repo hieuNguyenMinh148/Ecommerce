@@ -26,6 +26,8 @@ public interface ProductService {
 
     void enableById(Long id);
 
+    List<Product> getListForExport();
+
 
     /*CUSTOMER*/
     List<Product> getAllProducts();
@@ -38,8 +40,13 @@ public interface ProductService {
 
     List<ProductDto> findAllActivated();
 
-//    List<Product> filterHighPrice();
-//
-//    List<Product> filterLowPrice();
+    List<ProductDto> findNewActivated();
 
+    List<Product> filterHighPrice();
+
+    List<Product> filterLowPrice();
+
+    Page<Product> getPageProducts(Long categoryId, int pageNumber, int pageSize);
+
+    Page<Product> searchPageProducts(Long categoryId, int pageNumber, int pageSize, String keyword);
 }

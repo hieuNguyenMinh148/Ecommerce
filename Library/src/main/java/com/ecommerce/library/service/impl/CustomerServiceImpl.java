@@ -3,8 +3,10 @@ package com.ecommerce.library.service.impl;
 import com.ecommerce.library.dto.CustomerDto;
 import com.ecommerce.library.model.Customer;
 import com.ecommerce.library.model.Role;
+import com.ecommerce.library.model.ShoppingCart;
 import com.ecommerce.library.repository.CustomerRepository;
 import com.ecommerce.library.repository.RoleRepository;
+import com.ecommerce.library.repository.ShoppingCartRepository;
 import com.ecommerce.library.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,15 +23,24 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private ShoppingCartRepository shoppingCartRepository;
+
     @Override
     public CustomerDto save(CustomerDto customerDto) {
         Customer customer = new Customer();
+        ShoppingCart shoppingCart = new ShoppingCart();
         customer.setFirstName(customerDto.getFirstName());
         customer.setLastName(customerDto.getLastName());
         customer.setPassword(customerDto.getPassword());
         customer.setUsername(customerDto.getUsername());
+        customer.setShoppingCart(shoppingCart);
         customer.setRoles(Arrays.asList(roleRepository.findByName("CUSTOMER")));
+
+        shoppingCartRepository.save(shoppingCart);
         Customer customerSave = customerRepository.save(customer);
+        shoppingCart.setCustomer(customer);
+        shoppingCartRepository.save(shoppingCart);
         return mapperDto(customerSave);
     }
 

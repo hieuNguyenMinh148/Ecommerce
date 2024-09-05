@@ -21,10 +21,17 @@ public class Order {
     private Date orderDate;
     private Date deliveryDate;
     private double totalPrice;
+    private double total;
+    private double discountFee;
     private double tax;
     private String notes;
     private String orderStatus;
     private boolean isAccepted;
+    private double shippingFee;
+    private boolean isCanceled;
+    private Date dateUpdate;
+    private String paymentMethod;
+    private boolean isPaid;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
@@ -32,4 +39,5 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDetail> orderDetailList;
+
 }

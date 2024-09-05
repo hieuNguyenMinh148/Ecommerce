@@ -18,6 +18,8 @@ public class ShoppingCart {
     private Long id;
     private int totalItems;
     private double totalPrices;
+    private double discountFee;
+    private double total;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")

@@ -1750,7 +1750,7 @@ ul.cart-list > li.total > .btn:hover {
 
 /*------------------------------------------------------------------ All Pages -------------------------------------------------------------------*/
 .all-title-box {
-    background: url("../images/Crab 02 - Crab Toast.jpg") no-repeat center center;
+    /*background: url("../images/Crab 02 - Crab Toast.jpg") no-repeat center center;*/
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -ms-background-size: cover;

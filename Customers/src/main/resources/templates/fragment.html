@@ -49,6 +49,8 @@
                     <select id="" class="selectpicker show-tick form-control" data-placeholder="Sign In" onchange="location = this.value;">
                         <option th:text="${session.username != null} ? ${session.username} : 'Authentication'"></option>
                         <option th:if="${session.username == null}" value="http://localhost:8090/shop/login">Sign In</option>
+                        <option th:if="${session.username != null}" value="http://localhost:8090/shop/account">My Account</option>
+                        <option th:if="${session.username != null}" value="http://localhost:8090/shop/order">My Order</option>
                         <option th:if="${session.username != null}" value="http://localhost:8090/shop/logout">Log out</option>
                         <option th:if="${session.username == null}" value="http://localhost:8090/shop/register">Sign Up</option>
                     </select>
@@ -109,18 +111,18 @@
                 <ul class="nav navbar-nav ml-auto" data-in="fadeInDown" data-out="fadeOutUp">
                     <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
                     <li class="nav-item active"><a class="nav-link" th:href="@{/home}">Menu</a></li>
-
-                    <li class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Shop</a>
-                        <ul class="dropdown-menu">
-                            <li><a th:href="@{/product-of-category/1}">Shop Detail</a></li>
-<!--                            <li><a th:href="@{/cart}">Cart</a></li>-->
-<!--                            <li><a th:href="@{/check-out}">Checkout</a></li>-->
-                            <li><a th:href="@{/account}">My Account</a></li>
-                            <li><a th:href="@{/order}">My Order</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/product-of-category/1}">Shop Detail</a></li>
+<!--                    <li class="dropdown">-->
+<!--                        <a href="#" class="nav-link dropdown-toggle arrow" data-toggle="dropdown">Shop</a>-->
+<!--                        <ul class="dropdown-menu">-->
+<!--                            <li><a th:href="@{/product-of-category/1}">Shop Detail</a></li>-->
+<!--&lt;!&ndash;                            <li><a th:href="@{/cart}">Cart</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <li><a th:href="@{/check-out}">Checkout</a></li>&ndash;&gt;-->
+<!--                            <li><a th:href="@{/account}">My Account</a></li>-->
+<!--                            <li><a th:href="@{/order}">My Order</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+                    <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -182,8 +184,10 @@
     <div class="col-12 col-sm-8 text-center text-sm-left">
         <div class="toolbar-sorter-right">
             <span>Sort by </span>
-            <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD">
+            <select id="basic" class="selectpicker show-tick form-control" data-placeholder="$ USD" onchange="onSelectChange();">
                 <option data-display="Select">Nothing</option>
+                <option data-display="Select" value="high-price">High Price → Low Price</option>
+                <option data-display="Select" value="low-price">Low Price → High Price</option>
             </select>
         </div>
         <p>Showing all results</p>
@@ -208,7 +212,7 @@
     <div class="container">
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-search"></i></span>
-            <input type="text" class="form-control" placeholder="Search">
+            <input type="text" name="keyword" class="form-control" placeholder="Search">
             <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
         </div>
     </div>
@@ -220,42 +224,42 @@
     <div class="main-instagram owl-carousel owl-theme">
         <div class="item">
             <div class="ins-inner-box">
-                <a th:href="@{/home}"><img th:src="@{/images/Fish 01 - Fish Tacos.jpg}" alt=""/></a>
+<!--                <a th:href="@{/home}"><img th:src="@{/images/Fish 01 - Fish Tacos.jpg}" alt=""/></a>-->
 
             </div>
         </div>
         <div class="item">
             <div class="ins-inner-box">
-                <img th:src="@{/images/instagram-img-02.jpg}" alt=""/>
+<!--                <img th:src="@{/images/instagram-img-02.jpg}" alt=""/>-->
             </div>
         </div>
         <div class="item">
             <div class="ins-inner-box">
-                <a th:href="@{/home}"><img th:src="@{/images/Fish 04 - Red Pepper & Parmesan Tilapia.jpg}" alt=""/></a>
+<!--                <a th:href="@{/home}"><img th:src="@{/images/Fish 04 - Red Pepper & Parmesan Tilapia.jpg}" alt=""/></a>-->
             </div>
         </div>
         <div class="item">
             <div class="ins-inner-box">
-                <a th:href="@{/home}"><img th:src="@{/images/Fish 05 - Almond-Topped Fish.jpg}" alt=""/></a>
+<!--                <a th:href="@{/home}"><img th:src="@{/images/Fish 05 - Almond-Topped Fish.jpg}" alt=""/></a>-->
             </div>
         </div>
         <div class="item">
             <div class="ins-inner-box">
-                <a th:href="@{/home}"><img th:src="@{/images/Shrimp 03 - Shrimp Tostadas with Avocado Salsa.jpg}"
-                                           alt=""/></a>
+<!--                <a th:href="@{/home}"><img th:src="@{/images/Shrimp 03 - Shrimp Tostadas with Avocado Salsa.jpg}"-->
+<!--                                           alt=""/></a>-->
             </div>
         </div>
         <div class="item">
             <div class="ins-inner-box">
-                <a th:href="@{/home}"><img th:src="@{/images/Shrimp 08 - Grilled Shrimp and Chorizo Appetizers.jpg}"
-                                           alt=""/></a>
+<!--                <a th:href="@{/home}"><img th:src="@{/images/Shrimp 08 - Grilled Shrimp and Chorizo Appetizers.jpg}"-->
+<!--                                           alt=""/></a>-->
             </div>
         </div>
         <div class="item">
             <div class="ins-inner-box">
-                <a th:href="@{/home}"><img
-                        th:src="@{/images/Octopus 06 - Red Wine–Braised Baby Octopus with Black Olives.jpg}"
-                        alt=""/></a>
+<!--                <a th:href="@{/home}"><img-->
+<!--                        th:src="@{/images/Octopus 06 - Red Wine–Braised Baby Octopus with Black Olives.jpg}"-->
+<!--                        alt=""/></a>-->
             </div>
         </div>
     </div>
@@ -307,6 +311,15 @@
     </div>
 </footer>
 
+<div th:fragment="chat-bot" style="bottom: 200px !important;">
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+            intent="WELCOME"
+            chat-title="ecommerce_spring"
+            agent-id="266fd608-dde2-4ad1-a60e-7e2c5fcb0a4e"
+            language-code="en"
+    ></df-messenger>
+</div>
 
 <div th:fragment="script">
     <!-- ALL JS FILES -->

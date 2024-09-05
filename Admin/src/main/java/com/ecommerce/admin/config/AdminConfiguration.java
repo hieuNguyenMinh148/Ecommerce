@@ -39,9 +39,10 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/*").permitAll()
-                .antMatchers("/admin/*")
+        http.authorizeRequests()
+                .antMatchers("/admin/**")
                 .hasAuthority("ADMIN")
+                .antMatchers("/*").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -51,6 +52,7 @@ public class AdminConfiguration extends WebSecurityConfigurerAdapter {
                 .and().logout()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
+                .deleteCookies("JSESSIONID", "remember-me")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout").permitAll();
     }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -20,6 +21,7 @@ public class Product {
     private String description;
     private double costPrice;
     private double salePrice;
+    private double discountedPrice;
     private int currentQuantity;
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB")
@@ -29,4 +31,6 @@ public class Product {
     private Category category;
     private boolean is_deleted;
     private boolean is_activated;
+    private Date date_created;
+    private Date date_updated;
 }

@@ -1,10 +1,8 @@
 package com.ecommerce.customer.controller;
 
-import com.ecommerce.library.model.CartItem;
-import com.ecommerce.library.model.Customer;
-import com.ecommerce.library.model.Order;
-import com.ecommerce.library.model.ShoppingCart;
+import com.ecommerce.library.model.*;
 import com.ecommerce.library.service.CustomerService;
+import com.ecommerce.library.service.OrderDetailService;
 import com.ecommerce.library.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +25,9 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private OrderDetailService orderDetailService;
+
     @GetMapping("/check-out")
     public String checkOut(Model model, Principal principal) {
         if (principal == null) {
@@ -34,7 +35,8 @@ public class OrderController {
         }
         String username = principal.getName();
         Customer customer = customerService.findByUsername(username);
-        if (customer.getPhoneNumber().trim().isEmpty() || customer.getAddress().trim().isEmpty() || customer.getCity().trim().isEmpty() || customer.getCountry().trim().isEmpty()) {
+        if (customer.getPhoneNumber() == null || customer.getAddress() == null ||
+                customer.getCity() == null || customer.getCountry() == null) {
             model.addAttribute("customer", customer);
             model.addAttribute("error", "You must fill all of the information after checkout");
             return "my-account1";
@@ -80,14 +82,30 @@ public class OrderController {
             model.addAttribute("error", "Your cart is empty");
             return "checkout";
         }
-        orderService.saveOrder(cart);
+        orderService.saveOrder(cart, "Cash");
         return "redirect:/order";
     }
 
-    @GetMapping("/cancel-order/{id}")
-    public String cancelOrder(@PathVariable("id") Long id, RedirectAttributes attributes){
+    @GetMapping("/order-detail/{id}")
+    public String getOrderDetailPage(@PathVariable Long id, Model model) {
+        Order order = orderService.getOrderById(id);
+        List<OrderDetail> orderDetails = orderDetailService.findByOrderId(id);
+        model.addAttribute("order", order);
+        model.addAttribute("orderDetails", orderDetails);
+        return "order-detail";
+    }
+
+    @GetMapping("/order-detail/cancel-order/{id}")
+    public String cancelOrder(@PathVariable("id") Long id, RedirectAttributes attributes) {
         orderService.cancelOrder(id);
         attributes.addFlashAttribute("success", "Cancel successfully");
+        return "redirect:/order";
+    }
+
+    @GetMapping("/order-detail/receive-order/{id}")
+    public String receiveOrder(@PathVariable("id") Long id, RedirectAttributes attributes) {
+        orderService.receiveOrder(id);
+        attributes.addFlashAttribute("success", "Thanks for your order");
         return "redirect:/order";
     }
 }

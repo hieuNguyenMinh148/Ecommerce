@@ -45,8 +45,8 @@ public class HomeController {
 
     @GetMapping("/home")
     public String index(Model model, Principal principal, HttpSession session) {
-        List<Category> categories = categoryService.findAll();
-        List<ProductDto> productDto = productService.findAllActivated();
+        List<Category> categories = categoryService.findAllByActivated();
+        List<ProductDto> productDto = productService.findNewActivated();
         model.addAttribute("categories", categories);
         model.addAttribute("products", productDto);
         if (principal != null) {
@@ -56,6 +56,11 @@ public class HomeController {
             session.setAttribute("totalItems", cart.getTotalItems());
         }
         return "/index";
+    }
+
+    @GetMapping("/contact-us")
+    public String getContact(){
+        return "contact-us";
     }
 
 }

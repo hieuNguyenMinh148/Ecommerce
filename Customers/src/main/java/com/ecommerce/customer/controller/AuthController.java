@@ -2,6 +2,7 @@ package com.ecommerce.customer.controller;
 
 import com.ecommerce.library.dto.CustomerDto;
 import com.ecommerce.library.model.Customer;
+import com.ecommerce.library.model.ShoppingCart;
 import com.ecommerce.library.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -48,6 +49,7 @@ public class AuthController {
             }
             if (customerDto.getPassword().equals(customerDto.getRepeatPassword())) {
                 customerDto.setPassword(encoder.encode(customerDto.getPassword()));
+
                 CustomerDto customerDtoSave = customerService.save(customerDto);
                 model.addAttribute("success", "Register successfully");
                 model.addAttribute("customerDto", customerDto);

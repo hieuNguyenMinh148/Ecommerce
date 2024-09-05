@@ -45,6 +45,9 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-lg-6 mb-3">
+                <div th:if="${message}" class="text-center alert-warning alert col-2 right">
+                    <p th:text="${message}"></p>
+                </div>
                 <div class="checkout-address">
                     <div class="title-left">
                         <h3>Billing address</h3>
@@ -55,6 +58,13 @@
                             <label for="username">Username *</label>
                             <div class="input-group">
                                 <p class="form-control" id="username" placeholder="" th:text="${customer.username}"></p>
+
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name">Full Name </label>
+                            <div class="input-group">
+                                <p class="form-control" id="name" placeholder="" th:text="${customer.firstName} + ' ' + ${customer.lastName}"></p>
 
                             </div>
                         </div>
@@ -74,39 +84,20 @@
                         <div class="title"><span>Payment Methods</span></div>
                         <div class="d-block my-3">
                             <div class="custom-control custom-radio">
-                                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" checked
+                                <input id="cash" name="paymentMethod" type="radio" class="custom-control-input" checked
                                        required>
-                                <label class="custom-control-label" for="debit">Cash</label>
+                                <label class="custom-control-label" for="cash">Cash</label>
                             </div>
                             <br>
                             <div class="custom-control custom-radio">
-                                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input"
-                                       disabled>
-                                <label class="custom-control-label" for="credit">Bank card</label>
-                                <div style="color: #f33232; font-size: 12px;"> Sorry we currently do not support this
-                                    payment method.
-                                </div>
+                                <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input">
+                                <label class="custom-control-label" for="paypal">Paypal</label>
+<!--                                <div style="color: #f33232; font-size: 12px;"> Sorry we currently do not support this-->
+<!--                                    payment method.-->
+<!--                                </div>-->
                             </div>
                         </div>
-                        <!--                            <div class="row">-->
-                        <!--                                <div class="col-md-6 mb-3">-->
-                        <!--                                    <label for="cc-name">Name on card</label>-->
-                        <!--                                    <input type="text" class="form-control" id="cc-name" placeholder="" required> <small class="text-muted">Full name as displayed on card</small>-->
-                        <!--                                    <div class="invalid-feedback"> Name on card is required </div>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="col-md-6 mb-3">-->
-                        <!--                                    <label for="cc-number">Card number</label>-->
-                        <!--                                    <input type="text" class="form-control" id="cc-number" placeholder="" required>-->
-                        <!--                                    <div class="invalid-feedback"> Credit card number is required </div>-->
-                        <!--                                </div>-->
-                        <!--                            </div>-->
-                        <!--                            <div class="row">-->
-                        <!--                                <div class="col-md-6 mb-3">-->
-                        <!--                                    <label for="cc-cvv">CVV</label>-->
-                        <!--                                    <input type="text" class="form-control" id="cc-cvv" placeholder="" required>-->
-                        <!--                                    <div class="invalid-feedback"> Security code required </div>-->
-                        <!--                                </div>-->
-                        <!--                            </div>-->
+
                         <hr class="mb-1">
                     </form>
                 </div>
@@ -117,13 +108,14 @@
                         <div class="title-left">
                             <h3>Shopping cart</h3>
                         </div>
+                        <div id="orderId" th:text="${cart.id}" style="display: none;"></div>
                         <div class="rounded p-2 bg-light" th:each="item : ${cart.cartItem}">
                             <div class="media mb-2">
                                 <div class="media-body"><a th:href="@{/product-detail/{id} (id = ${item.product.id})}"
                                                            th:text="${item.product.name}"></a>
                                     <div class="small text-muted">Price: $[[${item.product.costPrice}]] <span
                                             class="mx-2">|</span> Qty: [[${item.quantity}]] <span class="mx-2">|</span>
-                                        Subtotal: $[[${item.totalPrice}]]
+                                        Sale: [[${item.product.salePrice}]]% <span class="mx-2">|</span> Total: $[[${item.totalPrice}]]
                                     </div>
                                 </div>
                             </div>
@@ -144,11 +136,11 @@
                         <hr class="my-1">
                         <div class="d-flex">
                             <h4>Sub Total</h4>
-                            <div class="ml-auto font-weight-bold" th:text="'$' + ${cart.totalPrices}"></div>
+                            <div class="ml-auto font-weight-bold" th:text="'$' + ${cart.total}"></div>
                         </div>
                         <div class="d-flex">
                             <h4>Discount</h4>
-                            <div class="ml-auto font-weight-bold"> $0</div>
+                            <div class="ml-auto font-weight-bold" th:text="'$' + ${cart.discountFee}"> $0</div>
                         </div>
                         <hr class="my-1">
 
@@ -167,8 +159,8 @@
                 <div th:if="${error}">
                     <p th:text="${error}" class="alert-warning alert text-center"></p>
                 </div>
-                <div class="col-12 d-flex shopping-box"><a th:href="@{/save-order}" class="ml-auto btn hvr-hover">Place
-                    Order</a></div>
+                <a id="checkoutButton" th:href="@{/save-order}" class="ml-auto btn hvr-hover text-white float-right">Place Order</a>
+
             </div>
         </div>
     </div>
@@ -185,12 +177,38 @@
 <!-- Start Footer  -->
 <footer th:replace="fragment :: footer"></footer>
 <!-- End Footer  -->
-
+<footer th:replace="fragment :: chat-bot"></footer>
 <!-- End All Title Box -->
 <div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
 
 <!--JS files-->
 <div th:replace="fragment :: script"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var paypalRadio = document.getElementById("paypal");
+    var checkoutButton = document.getElementById("checkoutButton");
+    var cashRadio = document.getElementById("cash");
+    var orderId = document.getElementById("orderId").innerText;
+
+    paypalRadio.addEventListener("change", function () {
+      if (paypalRadio.checked) {
+        // Thay đổi văn bản của nút
+        checkoutButton.textContent = "Proceed to Paypal";
+        // Thay đổi URL đích của nút
+        checkoutButton.setAttribute("href", "/shop/payment/create");
+      }
+    });
+
+    cashRadio.addEventListener("change", function () {
+      if (cashRadio.checked) {
+        // Reset văn bản của nút và URL
+        checkoutButton.textContent = "Place Order";
+        checkoutButton.setAttribute("href", "/shop/save-order");
+      }
+    });
+  });
+</script>
 
 </body>
 

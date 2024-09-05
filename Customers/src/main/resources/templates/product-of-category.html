@@ -66,7 +66,7 @@
                                             <div class="products-single fix">
                                                 <div class="box-img-hover">
                                                     <img th:src="'data:image/jpeg;base64,' + ${product.image}"
-                                                         class="img-fluid" alt="Image">
+                                                         class="img-fluid" alt="Image" style="max-height: 300px;">
                                                     <div class="mask-icon">
                                                         <ul>
                                                             <li>
@@ -76,17 +76,45 @@
                                                                         class="fas fa-eye"></i></a></li>
                                                         </ul>
                                                         <input type="hidden" th:value="${product.id}" name="id">
-                                                        <input class="cart btn" type="submit" value="Add to Cart">
+                                                        <input class="cart btn hvr-hover" type="submit" value="Add to Cart"
+                                                               th:disabled="${product.currentQuantity == 0}">
                                                     </div>
                                                 </div>
                                                 <div class="why-text">
                                                     <h4 th:text="${product.name}"></h4>
-                                                    <h5 th:text="'$'+${product.costPrice}"></h5>
+                                                    <div>
+                                                        <h5 th:style="${product.salePrice != 0} ? 'text-decoration: line-through;' : ''" th:text="'$' + ${product.costPrice}"></h5>
+                                                        <h5 th:if="${product.currentQuantity == 0}" style="margin-left: 10px; font-size: 12px;">Out of stock</h5>
+                                                        <h5 th:if="${product.currentQuantity != 0}" th:text="'Qt: ' + ${product.currentQuantity}" style="margin-left: 20px;"></h5>
+                                                        <h5 style="float:right;" th:if="${product.salePrice != 0}">
+                                                            <span th:text="'$' + ${product.discountedPrice}"></span>
+                                                        </h5>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    <li class="page-item">
+                                        <a th:if="${currentPage > 1}" class="page-link"
+                                           th:href="@{'/product-of-category/' +${category.id} + '?page=' + ${currentPage - 1} + ${keyword != null ? '&keyword=' + keyword : ''}}">&laquo;
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item" th:classappend="${currentPage == page ? 'active' : ''}"
+                                        th:each="page:${#numbers.sequence(1, totalPages)}">
+                                        <a class="page-link" th:text="${page}"
+                                           th:href="@{'/product-of-category/' +${category.id} + '?page=' + ${page} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item">
+                                        <a th:if="${currentPage != totalPages}" class="page-link"
+                                           th:href="@{'/product-of-category/' +${category.id} + '?page=' + ${currentPage + 1} + ${keyword != null ? '&keyword=' + keyword : ''}}">&raquo;
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
 
                             <!--List View-->
@@ -108,7 +136,8 @@
                                                     <h5 th:text="'$'+${product.costPrice}"></h5>
                                                     <p th:text="${product.description}"></p>
                                                     <input type="hidden" th:value="${product.id}" name="id">
-                                                    <input class="cart btn hvr-hover" type="submit" value="Add to Cart">
+                                                    <input class="cart btn hvr-hover" type="submit" value="Add to Cart"
+                                                           th:disabled="${product.currentQuantity == 0}">
                                                 </div>
                                             </div>
                                         </div>
@@ -123,8 +152,8 @@
             <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
                 <div class="product-categori">
                     <div class="search-product">
-                        <form action="#">
-                            <input class="form-control" placeholder="Search here..." type="text">
+                        <form>
+                            <input class="form-control" name="keyword" th:value="${keyword}" placeholder="Search here..." type="text">
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
@@ -136,8 +165,8 @@
                              data-children=".sub-men">
                             <a th:href="@{/product-of-category/{id} (id = ${category.categoryId})}"
                                class="list-group-item list-group-item-action" th:each="category : ${categories}">[[${category.categoryName}]]
-                                <small class="text-muted">([[${category.numberOfProduct}]])</small></a>
-
+<!--                                <small class="text-muted">([[${category.numberOfProduct}]])</small>-->
+                            </a>
                         </div>
                     </div>
                     <div class="filter-price-left">
@@ -159,13 +188,125 @@
 <!-- Start Footer  -->
 <footer th:replace="fragment :: footer"></footer>
 <!-- End Footer  -->
-
+<footer th:replace="fragment :: chat-bot"></footer>
 <!-- End All Title Box -->
 <div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
 
 
 <!--JS files-->
 <div th:replace="fragment :: script"></div>
+
+<script>
+    function onSelectChange() {
+        var selectedValue = $('#basic').value();
+        console.log("Selected value: " + selectedValue);
+    }
+
+    $(document).ready(function () {
+
+    })
+
+    function init() {
+        $.ajax({
+            url: "http://localhost:8090/shop/api/product/low-price",
+            method: 'GET',
+            contentType: 'application/json'
+            , success: function (resp) {
+                view(resp.data.content)
+            }
+        })
+    }
+
+    function view(list) {
+        let view = $('#view');
+        view.empty() //xoa view de tao moi
+        let str = '';
+        for (let i = 0; i < list.length; i++) {
+            str += ' <tr>\n' +
+                '        <td>\n' +
+                '            <div class="d-flex align-items-center">\n' +
+                '                <img\n' +
+                '                        id="' + list[i].id + '" \n' +
+                '                        alt=""\n' +
+                '                        style="width: 45px; height: 45px"\n' +
+                '                        class="rounded-circle"\n' +
+                '                />\n' +
+                '                <div class="ms-3">\n' +
+                '                    <p class="fw-bold mb-1">' + list[i].name + '</p>\n' +
+                '                    <p class="text-muted mb-0">id : ' + list[i].id + '</p>\n' +
+                '                </div>\n' +
+                '            </div>\n' +
+                '        </td>\n' +
+                '        <td>\n' +
+                '            <p class="fw-normal mb-1">' + list[i].costPrice + '</p>\n' +
+                '        </td>\n' +
+                '        <td>\n' +
+                '            <span class="badge badge-success rounded-pill d-inline">' + list[i].description + '</span>\n' +
+                '        </td>\n' +
+                '        <td>' + list[i].aid + '</td>\n' +
+                '        <td>\n' +
+                '            <button type="button" onclick="getCusById(' + list[i].salePrice + ')"  ' +
+                ' data-mdb-toggle="modal" data-mdb-target="#exampleModal"  class="btn btn-link btn-sm btn-rounded">\n' +
+                '                Edit\n' +
+                '            </button>\n' +
+                '        </td>\n' +
+                '        <td>\n' +
+                '<button type="button" className="btn btn-primary"onclick="getId(' + list[i].cusid + ')" data-mdb-toggle="modal" data-mdb-target="#exampleModal2">\n' +
+                '   upload\n' +
+                '</button>' +
+                '        </td>\n' +
+                '    </tr>'
+        }
+        view.append(str)
+    }
+    let view = $('#basic').value()
+
+    function lowPrice(list) {
+        $.ajax({
+            url:"http://localhost:8090/shop/api/product/" + view,
+            method: 'GET',
+            contentType: 'application/json'
+            , success: function (resp) {
+                console.log(resp)
+            }
+        })
+        let str = ''
+        // if (view == 'low-price'){
+        //     for (let i = 0; i < list.length; i++) {
+        //         str +='<div role="tabpanel" class="tab-pane fade show active" id="grid-view">\n' +
+        //             '                                <div class="row">\n' +
+        //             '                                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="product : ${products}">\n' +
+        //             '                                        <form th:action="@{/add-to-cart}" method="POST">\n' +
+        //             '                                            <div class="products-single fix">\n' +
+        //             '                                                <div class="box-img-hover">\n' +
+        //             '                                                    <img th:src="\'data:image/jpeg;base64,\' + ${product.image}"\n' +
+        //             '                                                         class="img-fluid" alt="Image">\n' +
+        //             '                                                    <div class="mask-icon">\n' +
+        //             '                                                        <ul>\n' +
+        //             '                                                            <li>\n' +
+        //             '                                                                <a th:href="@{/product-detail/{id} (id = ${product.id})}"\n' +
+        //             '                                                                   data-toggle="tooltip"\n' +
+        //             '                                                                   data-placement="right" title="View"><i\n' +
+        //             '                                                                        class="fas fa-eye"></i></a></li>\n' +
+        //             '                                                        </ul>\n' +
+        //             '                                                        <input type="hidden" th:value="${product.id}" name="id">\n' +
+        //             '                                                        <input class="cart btn" type="submit" value="Add to Cart">\n' +
+        //             '                                                    </div>\n' +
+        //             '                                                </div>\n' +
+        //             '                                                <div class="why-text">\n' +
+        //             '                                                    <h4 th:text="${product.name}"></h4>\n' +
+        //             '                                                    <h5 th:text="\'$\'+${product.costPrice}"></h5>\n' +
+        //             '                                                </div>\n' +
+        //             '                                            </div>\n' +
+        //             '                                        </form>\n' +
+        //             '                                    </div>\n' +
+        //             '                                </div>\n' +
+        //             '                            </div>'
+        //     }
+        // }
+
+    }
+</script>
 </body>
 
 </html>

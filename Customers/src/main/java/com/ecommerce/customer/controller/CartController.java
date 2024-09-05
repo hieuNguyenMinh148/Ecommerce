@@ -38,11 +38,14 @@ public class CartController {
             model.addAttribute("check", "No item in your cart");
         } else if (shoppingCart.getTotalItems() == 0) {
             model.addAttribute("check", "No item in your cart");
+            model.addAttribute("discountedFee", shoppingCart.getDiscountFee());
             session.setAttribute("totalItems", shoppingCart.getTotalItems());
         } else {
             session.setAttribute("totalItems", shoppingCart.getTotalItems());
-            double subTotal = shoppingCart.getTotalPrices();
+            double subTotal = shoppingCart.getTotal();
+            double grandTotal = shoppingCart.getTotalPrices();
             model.addAttribute("subTotal", subTotal);
+            model.addAttribute("grandTotal", grandTotal);
             model.addAttribute("shoppingCart", shoppingCart);
         }
         return "cart";

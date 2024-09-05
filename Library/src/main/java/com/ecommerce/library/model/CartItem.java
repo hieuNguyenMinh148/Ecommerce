@@ -3,7 +3,6 @@ package com.ecommerce.library.model;
 import lombok.*;
 
 import javax.persistence.*;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,6 +16,8 @@ public class CartItem {
     private Long id;
     private int quantity;
     private double totalPrice;
+    private double discountFee;
+    private double total;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "shopping_cart_id", referencedColumnName = "shopping_cart_id")
@@ -26,3 +27,4 @@ public class CartItem {
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Product product;
 }
+

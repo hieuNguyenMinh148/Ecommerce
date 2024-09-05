@@ -54,7 +54,9 @@
                         <tr>
                             <th>Images</th>
                             <th>Product Name</th>
+                            <th>In Stock</th>
                             <th>Price</th>
+                            <th>Sale Price</th>
                             <th>Quantity</th>
                             <th>Total</th>
                             <th style="text-align: center">Action</th>
@@ -63,20 +65,31 @@
                         <tbody>
                         <tr th:each="cartItem : ${shoppingCart.cartItem}">
                             <td class="thumbnail-img">
-                                <a href="#">
+                                <a th:href="@{/product-detail/{id} (id = ${cartItem.product.id})}">
                                     <img class="img-fluid"
-                                         th:src="'data:image/jpeg;base64,' + ${cartItem.product.image}" alt=""/>
+                                         th:src="'data:image/jpeg;base64,' + ${cartItem.product.image}"
+                                         style="max-height: 100px;" alt=""/>
                                 </a>
                             </td>
                             <td class="name-pr">
-                                <a href="#" th:text="${cartItem.product.name}"></a>
+                                <a th:href="@{/product-detail/{id} (id = ${cartItem.product.id})}"
+                                   th:text="${cartItem.product.name}"></a>
+                            </td>
+                            <td class="name-pr">
+                                <p href="#" th:text="${cartItem.product.currentQuantity}"></p>
                             </td>
                             <td class="price-pr">
-                                <p th:text="'$ ' + ${cartItem.product.costPrice}"></p>
+                                <p th:text="'$' + ${cartItem.product.costPrice}"></p>
+                            </td>
+                            <td class="price-pr">
+                                <div th:if="${cartItem.product.salePrice != 0}">
+                                    <p th:text="${cartItem.product.salePrice} + '%'"></p>
+                                </div>
                             </td>
                             <form th:action="@{/update-cart}" method="POST">
                                 <input type="hidden" name="id" th:value="${cartItem.product.id}">
-                                <td class="quantity-box"><input type="number" size="4" value="1" min="0" step="1"
+                                <td class="quantity-box"><input type="number" size="4" value="1" min="1"
+                                                                th:max="${cartItem.product.currentQuantity}" step="1"
                                                                 class="c-input-text qty text"
                                                                 th:value="${cartItem.quantity}" name="quantity"></td>
                                 <td class="total-pr">
@@ -133,7 +146,7 @@
                     </div>
                     <div class="d-flex">
                         <h4>Discount</h4>
-                        <div class="ml-auto font-weight-bold"> $0</div>
+                        <div class="ml-auto font-weight-bold" th:text="${shoppingCart == null} ? '$0' : '$' + ${shoppingCart.discountFee}"></div>
                     </div>
                     <hr class="my-1">
                     <div class="d-flex">
@@ -144,7 +157,7 @@
                     <div class="d-flex gr-total">
                         <h5>Grand Total</h5>
                         <div class="ml-auto font-weight-bold"
-                             th:text="${subTotal == null} ? '$0' : '$' + ${subTotal}"></div>
+                             th:text="${grandTotal == null} ? '$0' : '$' + ${grandTotal}"></div>
                     </div>
                     <hr>
                 </div>
@@ -172,7 +185,7 @@
 <!-- Start Footer  -->
 <footer th:replace="fragment :: footer"></footer>
 <!-- End Footer  -->
-
+<footer th:replace="fragment :: chat-bot"></footer>
 <!-- End All Title Box -->
 <div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
 

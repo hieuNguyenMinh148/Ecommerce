@@ -6,15 +6,13 @@ import com.ecommerce.library.repository.ProductRepository;
 import com.ecommerce.library.service.ProductService;
 import com.ecommerce.library.utils.ImageUpload;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,6 +34,7 @@ public class ProductServiceImpl implements ProductService {
             productDto.setCategory(product.getCategory());
             productDto.setCostPrice(product.getCostPrice());
             productDto.setSalePrice(product.getSalePrice());
+            productDto.setDiscountedPrice(product.getDiscountedPrice());
             productDto.setImage(product.getImage());
             productDto.setDelete(product.is_deleted());
             productDto.setActivated(product.is_activated());
@@ -56,6 +55,7 @@ public class ProductServiceImpl implements ProductService {
                 productDto.setCategory(product.getCategory());
                 productDto.setCostPrice(product.getCostPrice());
                 productDto.setSalePrice(product.getSalePrice());
+                productDto.setDiscountedPrice(product.getDiscountedPrice());
                 productDto.setImage(product.getImage());
                 productDto.setDelete(product.is_deleted());
                 productDto.setActivated(product.is_activated());
@@ -82,9 +82,12 @@ public class ProductServiceImpl implements ProductService {
             product.setDescription(productDto.getDescription());
             product.setCategory(productDto.getCategory());
             product.setCostPrice(productDto.getCostPrice());
+            product.setDiscountedPrice(productDto.getCostPrice() - (productDto.getCostPrice() * productDto.getSalePrice() / 100));
             product.setCurrentQuantity(productDto.getCurrentQuantity());
             product.set_activated(true);
             product.set_deleted(false);
+            product.setDate_created(new Date());
+            product.setDate_updated(new Date());
             return productRepository.save(product);
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,12 +115,12 @@ public class ProductServiceImpl implements ProductService {
             product.setCategory(productDto.getCategory());
             product.setCurrentQuantity(productDto.getCurrentQuantity());
             product.setSalePrice(productDto.getSalePrice());
+            product.setDiscountedPrice(productDto.getCostPrice() - (productDto.getCostPrice() * productDto.getSalePrice() / 100));
+            product.setDate_updated(new Date());
             return productRepository.save(product);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return null;
     }
 
@@ -129,7 +132,7 @@ public class ProductServiceImpl implements ProductService {
         productDto.setName(product.getName());
         productDto.setDescription(product.getDescription());
         productDto.setCategory(product.getCategory());
-        productDto.setCostPrice(productDto.getCostPrice());
+        productDto.setCostPrice(product.getCostPrice());
         productDto.setSalePrice(product.getSalePrice());
         productDto.setImage(product.getImage());
         productDto.setDelete(product.is_deleted());
@@ -158,7 +161,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDto> pageProduct(int pageNo) {
         Pageable pageable = PageRequest.of(pageNo, 5);
-        List<ProductDto> products = transfer(productRepository.findAll());
+        List<ProductDto> products = transfer(productRepository.findAllByDateCreated());
         Page<ProductDto> productPage = toPage(products, pageable);
         return productPage;
     }
@@ -186,6 +189,11 @@ public class ProductServiceImpl implements ProductService {
         product.set_activated(true);
         product.set_deleted(false);
         productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> getListForExport() {
+        return productRepository.getProductsByQuantityAndActivated();
     }
 
 
@@ -217,15 +225,36 @@ public class ProductServiceImpl implements ProductService {
         return productDtoList;
     }
 
-    //    @Override
-//    public List<Product> filterHighPrice() {
-//        return productRepository.filterHighPrice();
-//    }
-//
-//    @Override
-//    public List<Product> filterLowPrice() {
-//        return productRepository.filterLowPrice();
-//    }
+    @Override
+    public List<ProductDto> findNewActivated() {
+        List<Product> products = productRepository.findTop5ByActivated();
+        List<ProductDto> productDtoList = transferActivated(products);
+        return productDtoList;
+    }
+
+    @Override
+    public List<Product> filterHighPrice() {
+        return productRepository.filterHighPrice();
+    }
+
+    @Override
+    public List<Product> filterLowPrice() {
+        return productRepository.filterLowPrice();
+    }
+
+    @Override
+    public Page<Product> getPageProducts(Long categoryId, int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "date_created");
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+        return productRepository.pageProduct(pageRequest, categoryId);
+    }
+
+    @Override
+    public Page<Product> searchPageProducts(Long categoryId, int pageNumber, int pageSize, String keyword) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "date_created");
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+        return productRepository.searchPageProduct(pageRequest, categoryId, keyword);
+    }
 
 
 }

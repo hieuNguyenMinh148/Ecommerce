@@ -49,7 +49,7 @@
             <div class="col-lg-12">
                 <div class="title-all text-center">
                     <h1 th:text="${category.name}"></h1>
-                    <p>Have you a good meal!</p>
+<!--                    <p>Have you a good meal!</p>-->
                 </div>
             </div>
         </div>
@@ -57,8 +57,8 @@
             <div class="col-lg-12">
                 <div class="special-menu text-center">
                     <div class="button-group filter-button-group">
-                        <button class="active" data-filter="*">All</button>
-                        <button data-filter=".best-seller">Best seller</button>
+                        <button class="active" data-filter="*">New</button>
+<!--                        <button data-filter=".best-seller">Best seller</button>-->
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                 <form th:action="@{/add-to-cart}" method="POST">
                     <div class="products-single fix">
                         <div class="box-img-hover">
-                            <img th:src="'data:image/jpeg;base64,' + ${product.image}" class="img-fluid" alt="Image">
+                            <img th:src="'data:image/jpeg;base64,' + ${product.image}" style="max-height: 300px;" class="img-fluid" alt="Image">
                             <div class="mask-icon">
                                 <ul>
                                     <li><a th:href="@{/product-detail/{id} (id = ${product.id})}" data-toggle="tooltip"
@@ -97,12 +97,21 @@
                                            title="View"><i class="fas fa-eye"></i></a></li>
                                 </ul>
                                 <input type="hidden" th:value="${product.id}" name="id">
-                                <input class="cart btn" type="submit" value="Add to Cart">
+                                <input class="cart btn hvr-hover" type="submit" value="Add to Cart"
+                                       th:disabled="${product.currentQuantity == 0}">
                             </div>
                         </div>
                         <div class="why-text">
                             <h4 th:text="${product.name}"></h4>
-                            <h5 th:text="'$' + ${product.costPrice}"></h5>
+                            <div>
+                                <h5 th:style="${product.salePrice != 0} ? 'text-decoration: line-through;' : ''" th:text="'$' + ${product.costPrice}"></h5>
+                                <h5 th:if="${product.currentQuantity == 0}" style="margin-left: 10px; font-size: 12px;">Out of stock</h5>
+                                <h5 th:if="${product.currentQuantity != 0}" th:text="'Qt: ' + ${product.currentQuantity}" style="margin-left: 20px;"></h5>
+                                <h5 style="float:right;" th:if="${product.salePrice != 0}">
+                                    <span th:text="'$' + ${product.discountedPrice}"></span>
+                                </h5>
+                            </div>
+
                         </div>
                     </div>
                 </form>
@@ -122,7 +131,7 @@
 <!-- Start Footer  -->
 <footer th:replace="fragment :: footer"></footer>
 <!-- End Footer  -->
-
+<footer th:replace="fragment :: chat-bot"></footer>
 <!-- End All Title Box -->
 <div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
 

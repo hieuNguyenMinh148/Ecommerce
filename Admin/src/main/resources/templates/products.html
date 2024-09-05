@@ -60,6 +60,7 @@
                         <th scope="col">Name</th>
                         <th scope="col">Category</th>
                         <th scope="col">Price</th>
+                        <th scope="col">Sale</th>
                         <th scope="col">Sale Price</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Image</th>
@@ -72,7 +73,8 @@
                         <th scope="row" th:text="${product.name}"></th>
                         <td th:text="${product.category.name}"></td>
                         <td th:text="${product.costPrice}"></td>
-                        <td th:text="${product.salePrice}"></td>
+                        <td th:text="${product.salePrice} + '%'"></td>
+                        <td th:text="${product.discountedPrice}"></td>
                         <td th:text="${product.currentQuantity}"></td>
                         <td><img src="" style="height: 40px; width: 40px;"
                                  th:src="'data:image/jpeg;base64,' + ${product.image}"></td>
@@ -91,7 +93,7 @@
 
                 <!--Pagination-->
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination">
+                    <ul class="pagination float-right">
                         <li th:if="${currentPage != 0}" class="page-item">
                             <a th:href="@{'/products/' + ${currentPage - 1}}" class="page-link" href="#"
                                aria-label="Previous">
@@ -115,7 +117,7 @@
                         </li>
                     </ul>
                 </nav>
-
+                
             </div>
             <!-- /.container-fluid -->
 

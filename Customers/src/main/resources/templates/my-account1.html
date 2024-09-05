@@ -3,7 +3,95 @@
 <!-- Basic -->
 
 <head th:replace="fragment :: head"></head>
+<style>
+    /* Basic Styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+    }
 
+    .mainDiv {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .cardStyle {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+    }
+
+    .formTitle {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+    .inputDiv {
+        margin-bottom: 20px;
+    }
+
+    .inputLabel {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .buttonWrapper {
+        text-align: center;
+    }
+
+    .submitButton {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .submitButton:hover {
+        background-color: #45a049;
+    }
+
+    .nameInputs, .locationInputs {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .nameInputs div, .locationInputs div {
+        flex-basis: 48%;
+    }
+    /* Alert Styles */
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-warning {
+        color: #856404;
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+    }
+</style>
 <body>
 <!-- Start Main Top -->
 <div class="main-top" th:replace="fragment :: main-top"></div>
@@ -51,13 +139,16 @@
             <input type="text" th:field="*{id}" id="id" name="id" hidden>
 
             <div class="inputDiv">
-                <label class="inputLabel" for="firstname"> First name * </label>
-                <input type="text" th:field="*{firstName}" id="firstname" name="firstname" required>
-            </div>
-
-            <div class="inputDiv">
-                <label class="inputLabel" for="lastname">Last name *</label>
-                <input type="text" th:field="*{lastName}" id="lastname" name="lastname" required>
+                <div class="nameInputs">
+                    <div>
+                        <label class="inputLabel" for="firstname"> First name * </label>
+                        <input type="text" th:field="*{firstName}" id="firstname" name="firstname" required>
+                    </div>
+                    <div>
+                        <label class="inputLabel" for="lastname">Last name *</label>
+                        <input type="text" th:field="*{lastName}" id="lastname" name="lastname" required>
+                    </div>
+                </div>
             </div>
 
             <!--          <div class="inputDiv">-->
@@ -76,13 +167,16 @@
             </div>
 
             <div class="inputDiv">
-                <label class="inputLabel" for="address">Address *</label>
-                <input type="text" th:field="*{address}" id="address" name="address">
-            </div>
-
-            <div class="inputDiv">
-                <label class="inputLabel" for="city">City *</label>
-                <input type="text" th:field="*{city}" id="city" name="city">
+                <div class="locationInputs">
+                    <div>
+                        <label class="inputLabel" for="address">Address *</label>
+                        <input type="text" th:field="*{address}" id="address" name="address">
+                    </div>
+                    <div>
+                        <label class="inputLabel" for="city">City *</label>
+                        <input type="text" th:field="*{city}" id="city" name="city">
+                    </div>
+                </div>
             </div>
 
             <div class="inputDiv">
@@ -111,7 +205,7 @@
 <!-- Start Footer  -->
 <footer th:replace="fragment :: footer"></footer>
 <!-- End Footer  -->
-
+<footer th:replace="fragment :: chat-bot"></footer>
 <!-- End All Title Box -->
 <div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
 

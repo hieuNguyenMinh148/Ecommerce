@@ -61,58 +61,83 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="order : ${orders}">
+                            <tr th:each="order : ${orders}" data-order-id="${order.id}">
                                 <td class="order-date">
-                                    <span><b th:text="${order.orderDate}"></b></span>
+                                    <span><b
+                                            th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy HH:mm a')}"></b></span>
                                 </td>
 
                                 <td class="name-pr" th:if="${order.deliveryDate != null}">
-                                    <a href="#" th:text="${order.deliveryDate}">
-                                    </a>
+                                    <p th:if="${order.isCanceled() == true}" style="font-weight: bold; color: #ef2929">
+                                        CANCELLED</p>
+                                    <span><b th:if="${order.isCanceled() != true}"
+                                             th:text="${#dates.format(order.deliveryDate, 'dd/MM/yyyy')}"></b></span>
                                 </td>
 
                                 <td class="name-pr" th:if="${order.deliveryDate == null}">
-                                    <p style="font-weight: bold;">Waiting...</p>
+                                    <p th:if="${order.isCanceled() == true}" style="font-weight: bold; color: #ef2929">
+                                        CANCELLED</p>
+                                    <p th:if="${order.isCanceled() != true}" style="font-weight: bold;">Waiting...</p>
                                 </td>
 
                                 <td class="price-pr">
-                                    <p th:text="${order.orderStatus}" style="color: #1daacd; font-weight: bold;"></p>
+                                    <p th:if="${order.orderStatus == 'PENDING'}" th:text="${order.orderStatus}"
+                                       style="color: #1daacd; font-weight: bold;"></p>
+                                    <p th:if="${order.orderStatus == 'ACCEPTED'}" th:text="${order.orderStatus}"
+                                       style="color: #66e066; font-weight: bold;"></p>
+                                    <p th:if="${order.orderStatus == 'RECEIVED'}" th:text="${order.orderStatus}"
+                                       style="color: #45ee45; font-weight: bold;"></p>
+                                    <p th:if="${order.orderStatus == 'CANCELLED'}" th:text="${order.orderStatus}"
+                                       style="color: #ee4a4a; font-weight: bold;"></p>
                                 </td>
 
                                 <td class="total-pr">
                                     <p style="color: red; font-weight: bold;"
-                                    th:text="'$' + ${order.totalPrice}"></p>
+                                       th:text="'$' + ${order.totalPrice}"></p>
                                 </td>
                                 <td class="total-pr" style="color: black; font-weight: bold;">
-                                    <span>Cash</span>
+                                    <span th:text="${order.paymentMethod}"></span>
                                 <td>
-                                    <button type="submit" class="btn" style="border: none;" value="delete" data-toggle="modal" data-target="#Modal" title="Delete">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    <button class="btn" style="border: none;" value="view" title="View">
+                                        <a th:href="@{/order-detail/{id} (id = ${order.id})}">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </a>
                                     </button>
-                                </td>
 
-                                <!-- Modal -->
-                                <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="padding-right: -17px !important;">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h3 class="modal-title" id="exampleModalLabel">Delete Order</h3>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <h2><span>Are you sure to cancel this order!</span></h2>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <a th:href="@{/cancel-order/{id} (id = ${order.id})}" type="button" class="btn btn-danger">Delete</a>
+                                    <button class="btn" style="border: none;" value="cancel" title="Cancel">
+                                        <a style="color: #ff0000; cursor: pointer;" data-toggle="modal"
+                                           th:data-target="'#exampleModalDelete-' + ${order.id}">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </a>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" th:id="'exampleModalDelete-' + ${order.id}"
+                                         tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h2><span>Are you sure to cancel this order!</span></h2>
+                                                    <input type="hidden" id="orderId" value="" th:text="${order.id}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Cancel
+                                                    </button>
+
+                                                    <a th:href="@{/order-detail/cancel-order/{id} (id = ${order.id})}"
+                                                       class="btn btn-danger">Yes</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!--End Modal-->
-
+                                </td>
                             </tr>
 
                             </tbody>
@@ -125,7 +150,6 @@
 </section>
 
 
-
 <!-- Start Feed  -->
 <div class="instagram-box" th:replace="fragment :: instagram-box"></div>
 <!-- End Feed  -->
@@ -134,12 +158,39 @@
 <!-- Start Footer  -->
 <footer th:replace="fragment :: footer"></footer>
 <!-- End Footer  -->
-
+<footer th:replace="fragment :: chat-bot"></footer>
 <!-- End All Title Box -->
 <div><a href="#" id="back-to-top" title="Back to top" style="display: none; padding-top: 8px;">&uarr;</a></div>
 <!--JS files-->
 <div th:replace="fragment :: script"></div>
 
+<script>
+  $(document).ready(function () {
+    $('.delete-btn').click(function () {
+      var orderId = $(this).closest('tr').attr('data-order-id')
+      $('#orderId').val(orderId)
+      $('#Modal').modal('show')
+    })
+
+    $('#confirmCancel').click(function () {
+      var orderId = $('#orderId').val()
+      // Gửi AJAX request để hủy đơn hàng với orderId
+      console.log('Cancel order with ID: ' + orderId)
+      // $.ajax({
+      //     url: '/cancel-order/' + orderId,
+      //     type: 'POST',
+      //     success: function(response) {
+      //         console.log(response);
+      //         // Xử lý kết quả nếu cần
+      //     },
+      //     error: function(xhr, status, error) {
+      //         console.error(error);
+      //         // Xử lý lỗi nếu cần
+      //     }
+      // });
+    })
+  })
+</script>
 </body>
 
 </html>
